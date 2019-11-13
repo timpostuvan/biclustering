@@ -8,6 +8,7 @@ include_directories(src include)
 add_library(lib
 	include/matrix.h
 	include/cost_functions.h
+	include/fixed_rows.h
 	src/matrix.cpp
 	src/cost_functions.cpp
 	src/fixed_rows.cpp
