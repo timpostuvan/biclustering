@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <functional>
 
 using namespace std;
 
@@ -26,5 +27,9 @@ vector<vector<long double>> apply_permutation_columns(vector<vector<long double>
 vector<vector<long double>> apply_permutation_rows(vector<vector<long double>> &matrix, vector<int> &permutation);
 
 void print_matrix(vector<vector<long double>> &matrix);
+
+vector<vector<long double>> distance_matrix_columns(vector<vector<long double>> &matrix, function<long double(vector<vector<long double>>&)> cost_function);
+
+vector<vector<long double>> distance_matrix_rows(vector<vector<long double>> &matrix, function<long double(vector<vector<long double>>&)> cost_function);
 
 #endif
