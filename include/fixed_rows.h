@@ -28,6 +28,11 @@ public:
 	bool operator< (const Solution &sol) const;
 };
 
+long double lower_bound_1_closest(vector<vector<long double>> &matrix, function<long double(vector<vector<long double>>&)> cost_function);
+
+long double lower_bound_spanning_tree(vector<vector<long double>> &matrix, function<long double(vector<vector<long double>>&)> cost_function);
+
+long double lower_bound_2_closest(vector<vector<long double>> &matrix, function<long double(vector<vector<long double>>&)> cost_function);
 
 Solution all_permutations(vector<vector<long double>> &matrix, function<long double(vector<vector<long double>>&)> cost_function);
 

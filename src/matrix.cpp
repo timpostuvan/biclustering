@@ -156,9 +156,9 @@ vector<vector<long double>> distance_matrix_columns(vector<vector<long double>> 
 	int m = matrix[0].size();
 	
 	vector<vector<long double>> dist_matrix;
-	dist_matrix.resize(n);
+	dist_matrix.resize(m);
 	for(int i = 0; i < m; i++){
-		dist_matrix[i].resize(n);
+		dist_matrix[i].resize(m);
 		dist_matrix[i][i] = 0.0;
 		for(int j = 0; j < i; j++){
 			vector<vector<long double>> v; 

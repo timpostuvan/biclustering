@@ -1,0 +1,48 @@
+MOTIVACIJA:
+Biclustering najprej po eni dimenziji in potem po drugi se slabo obnese pri matrikah, ki so podobne šahovnici. Že izredno majhne razlike pri vhodnih podatkih lahko precej spremenijo kvaliteto rešitev.
+
+
+POVPREČJE PRI BRUTE FORCU (biclustering-staro):
+- večje dimenzije imajo slabše razmerje (1D vs 2D)
+- pri cost functionu Multiply8 skoraj ni razlike za večje dimenzije (1.0, 0.99, 0.99) pri dimenzijah (3*3, 4*4, 5*5)
+- pri cost functionu Squared8 večje razlike za večje dimenzije (1.02, 1.05, 1.08) pri dimenzijah (3*3, 4*4, 5*5)
+- pri cost functionu Variance22 večje razlike za večje dimenzije (1.02, 1.05, 1.06) pri dimenzijah (3*3, 4*4, 5*5)
+
+- za večje dimenzije 6*6 in več, potrebujemo paralelizem in več časa
+- za končno rešitev so kvadrati na diagonali boljši kot čista diagonala
+- že zelo majhne spremembe v vhodnih podatkih lahko zelo spremenijo razmerje med 1D in 2D (celo spremembe do 10^⁻3)
+
+---------------------------------------------------------------------------
+
+TRIKOTNIŠKA ENAKOST ZA VARIANCO 2*2 NE VELJA (PROTIPRIMER):
+0 | 1           0 | 0.5 | 1
+0 | 1           0 | 0.5 | 1
+cost = 1        cost = 0.5
+
+---------------------------------------------------------------------------
+
+PRIČAKOVANA VREDNOST MINIMUMA n VREDNOSTI, PORAZDELJENIH UNIFORMNO:
+- 1 / (n + 1)
+- izračunal sam, enako kot vir:
+https://math.stackexchange.com/questions/786392/expectation-of-minimum-of-n-i-i-d-uniform-random-variables 
+
+---------------------------------------------------------------------------
+POTREBNI BOLJ EKSAKTNI DOKAZI IN OPISI ALGORITMOV
+
+
+LOWER BOUND 1 DIMENZIJA:
+- lower_bound_1_closest: Naredimo cikel iz 
+
+- lower_bound_2_closest
+
+- lower_bound_spanning_tree
+
+
+ALGORITMI 1 DIMENZIJA:
+- all_permutations
+
+- random_permutations
+
+- spanning tree
+
+- random_greedy_path_two_ends

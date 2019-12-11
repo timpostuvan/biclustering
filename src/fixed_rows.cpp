@@ -9,7 +9,6 @@
 
 using namespace std;
 
-
 Solution::Solution(int n, int m, long double cost, vector<vector<long double>> &matrix, vector<int> &permutation){
 	this -> n = n;
 	this -> m = m;
@@ -56,7 +55,7 @@ bool Solution::operator< (const Solution &sol) const{
 	return this -> cost < sol.cost;
 }
 
-long double lower_bound(vector<vector<long double>> &matrix, function<long double(vector<vector<long double>>&)> cost_function){
+long double lower_bound_1_closest(vector<vector<long double>> &matrix, function<long double(vector<vector<long double>>&)> cost_function){
 	int n = matrix.size();
 	int m = matrix[0].size();
 
@@ -78,6 +77,90 @@ long double lower_bound(vector<vector<long double>> &matrix, function<long doubl
 	}
 
 	cost -= max_value;
+	return cost;
+}
+
+int rooting(vector<int> &root, int x){
+	if(root[x] == x){
+		return x;
+	}
+
+	return root[x] = rooting(root, root[x]);
+}
+
+long double lower_bound_spanning_tree(vector<vector<long double>> &matrix, function<long double(vector<vector<long double>>&)> cost_function){
+	int n = matrix.size();
+	int m = matrix[0].size();
+
+	vector<vector<long double>> dist_matrix = distance_matrix_columns(matrix, cost_function);
+	vector<tuple<long double, int, int>> distances;
+
+	for(int i = 0; i < dist_matrix.size(); i++){
+		for(int j = 0; j < dist_matrix[i].size(); j++){
+			distances.push_back(make_tuple(dist_matrix[i][j], i, j));
+		}
+	}
+
+	sort(distances.begin(), distances.end());
+
+	vector<int> root;
+	root.resize(m);
+	for(int i = 0; i < m; i++){
+		root[i] = i;
+	}
+
+	long double spanning_tree_value = 0.0;
+	for(int i = 0; i < distances.size(); i++){
+		long double edge_cost = get<0>(distances[i]);
+		int a = get<1>(distances[i]);
+		int b = get<2>(distances[i]);
+
+		int ra = rooting(root, a);
+		int rb = rooting(root, b);
+
+		if(ra != rb){
+			root[ra] = rb;
+			spanning_tree_value += edge_cost;
+		}
+	}
+
+	return spanning_tree_value;
+}
+
+
+long double lower_bound_2_closest(vector<vector<long double>> &matrix, function<long double(vector<vector<long double>>&)> cost_function){
+	int n = matrix.size();
+	int m = matrix[0].size();
+
+	vector<vector<long double>> dist_matrix = distance_matrix_columns(matrix, cost_function);
+
+	long double cost = 0.0;
+	vector<long double> all_distances;
+	for(int i = 0; i < m; i++){
+		vector<long double> distances;
+		for(int j = 0; j < m; j++){
+			if(i != j){
+				distances.push_back(dist_matrix[i][j]);
+			}
+		}
+
+		sort(distances.begin(), distances.end());
+		for(int j = 0; j < 2; j++){
+			cost += distances[j];
+			all_distances.push_back(distances[j]);
+		}
+	}
+
+	sort(all_distances.begin(), all_distances.end());
+	reverse(all_distances.begin(), all_distances.end());
+
+	if(m >= 3){
+		for(int i = 0; i < 2; i++){
+			cost -= all_distances[i];
+		}
+	}
+
+	cost /= 2.0;
 	return cost;
 }
 
@@ -110,7 +193,6 @@ Solution all_permutations(vector<vector<long double>> &matrix, function<long dou
 	return best_solution;
 }
 
-
 Solution random_permutations(int iterations, vector<vector<long double>> &matrix, function<long double(vector<vector<long double>>&)> cost_function){
 	srand(time(NULL));
 	
@@ -141,15 +223,6 @@ Solution random_permutations(int iterations, vector<vector<long double>> &matrix
 	best_solution.apply(matrix);
 	best_solution.print(0); 
 	return best_solution;
-}
-
-
-int rooting(vector<int> &root, int x){
-	if(root[x] == x){
-		return x;
-	}
-
-	return root[x] = rooting(root, root[x]);
 }
 
 Solution spanning_tree(vector<vector<long double>> &matrix, function<long double(vector<vector<long double>>&)> cost_function){
@@ -231,7 +304,6 @@ Solution spanning_tree(vector<vector<long double>> &matrix, function<long double
 	best_solution.print(0);
 	return best_solution;
 }
-
 
 Solution random_greedy_path_two_ends(int k, vector<vector<long double>> &matrix, function<long double(vector<vector<long double>>&)> cost_function){
 	int n = matrix.size();
