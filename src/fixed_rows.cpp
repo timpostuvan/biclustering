@@ -375,3 +375,80 @@ Solution random_greedy_path_two_ends(int k, vector<vector<long double>> &matrix,
 	best_solution.print(0);
 	return best_solution;
 }
+
+long double calculate_difference(vector<vector<long double>> &dist_matrix, vector<int> &permutation, int x, int y){
+	int m = dist_matrix.size();
+	long double ret = 0.0;
+
+	if(x != -1){
+		ret += (dist_matrix[permutation[x]][permutation[y]] - dist_matrix[permutation[x]][permutation[x + 1]]);
+	}
+
+	if(y != (m - 1)){
+		ret += (dist_matrix[permutation[x + 1]][permutation[y + 1]] - dist_matrix[permutation[y]][permutation[y + 1]]);
+	}
+
+	return ret;
+}
+
+Solution tsp_2_opt(int search_iterations, long double difference, vector<vector<long double>> &matrix, function<long double(vector<vector<long double>>&)> cost_function){
+	srand(time(NULL));
+	mt19937 gen(time(NULL));
+	
+	int n = matrix.size();
+	int m = matrix[0].size();
+
+	vector<vector<long double>> dist_matrix = distance_matrix_columns(matrix, cost_function);
+
+	vector<int> permutation;
+	for(int i = 0; i < m; i++){
+		permutation.push_back(i);
+	}
+	random_shuffle(permutation.begin(), permutation.end());
+	
+	long double cost = 0.0;
+	for(int i = 0; i < m - 1; i++){
+		cost += dist_matrix[permutation[i]][permutation[i + 1]];
+	}
+
+	Solution best_solution = Solution(n, m, cost, matrix, permutation);
+	long double delta = difference + 100.0;
+
+	cout << best_solution.cost << endl;
+	while(delta >= difference){
+		pair<int, int> best_move = {-1, -1};
+		long double best_cost = 1.0;
+
+		for(int i = 0; i < search_iterations; i++){
+			int x = (gen() % (m + 1)) - 1;
+			int y = (gen() % (m + 1)) - 1;
+
+			if(x > y){
+				swap(x, y);
+			}
+
+			if(x == y){
+				continue;
+			}			
+
+			if(calculate_difference(dist_matrix, best_solution.permutation, x, y) < best_cost){
+				best_cost = calculate_difference(dist_matrix, best_solution.permutation, x, y);
+				best_move = make_pair(x, y);
+			}
+		}
+
+		if(best_cost >= 0.0){	// no better move found
+			break;
+		}
+
+		vector<int> new_permutation = best_solution.permutation;
+		reverse(new_permutation.begin() + best_move.first + 1, new_permutation.begin() + best_move.second + 1);
+		
+		best_solution.update(best_solution.cost + best_cost, new_permutation);
+		delta = abs(best_cost);
+	}
+
+	best_solution.apply(matrix);
+	best_solution.print(0); 
+	return best_solution;
+}

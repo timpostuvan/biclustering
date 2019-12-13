@@ -44,4 +44,8 @@ Solution spanning_tree(vector<vector<long double>> &matrix, function<long double
 
 Solution random_greedy_path_two_ends(int k, vector<vector<long double>> &matrix, function<long double(vector<vector<long double>>&)> cost_function);
 
+long double calculate_difference(vector<vector<long double>> &dist_matrix, int x, int y);
+
+Solution tsp_2_opt(int search_iterations, long double difference, vector<vector<long double>> &matrix, function<long double(vector<vector<long double>>&)> cost_function);
+
 #endif

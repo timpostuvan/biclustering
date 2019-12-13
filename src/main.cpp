@@ -21,13 +21,16 @@ int main(){
 	cout << endl << "Initial cost: " << CostFunctions::variance22(matrix) << endl;
 	
 	cout << endl << "Random permutations: " << endl;
-	random_permutations(10000, matrix, CostFunctions::variance22);
+	random_permutations(100000, matrix, CostFunctions::variance22);
 
 	cout << endl << "Random greedy path two ends: " << endl;
 	random_greedy_path_two_ends(1, matrix, CostFunctions::variance22);
 
 	cout << endl << "Spanning tree: " << endl;
-	spanning_tree(matrix, CostFunctions::variance22);
+	spanning_tree(matrix, CostFunctions::variance22); 
+
+	cout << endl << "2-opt heuristics: " << endl;
+	tsp_2_opt(100000, 0.1, matrix, CostFunctions::variance22);
 
 /*	cout << endl << "All permutations " << endl;
 	all_permutations(matrix, CostFunctions::variance22); 
