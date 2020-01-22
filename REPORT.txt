@@ -49,6 +49,14 @@ https://reference.wolfram.com/language/ref/BetaDistribution.html
 - pričakovane vrednosti za spremenljivko se na žalost zaradi kompleksnosti ne da izračunati analitično, zato moramo uporabiti aproksimacijo
 
 - rezultati za manjša števila niso čisto enaki kot pri eksperimetnu, ampak za večja števila pa začnejo dobro konvergirati
+
+---------------------------------------------------------------------------
+
+PRIČAKOVANA MINIMALNA POT NA n VOZLIŠČIH:
+- imamo n vektorjev z vhodi med 0 in 1, porazdeljenimi po uniformni distribuciji. Nad tem lahko sestavimo graf, kjer je vsak vektor svoje vozlišče, razdalja med dvema vozliščema pa razdalja vektorjev glede na cost function (varianca 2 * 2 oken). Najkrajšo pot v grafu iščemo tako, da pot začenemo v poljubnem vozlišču in k poti dodamo vozlišče, ki ima iz trenutnega vozlišča najkrajšo razdaljo. Nato izbrišemo povezave do prejšnjega vozlišča. Enak postopek ponovimo iz novega vozlišča. Dodajanje najbližjega vozlišča je ekvivalenten iskanju minimuma x vrednosti po določeni distribuciji. V našem primeru je to ravno distribucija od zgoraj
+- pričakovana dolžina poti na n vozliščih je ravno seštevek minimuma x vrednosti po zgornji distribuciji za x = 0 do n - 1 (gledamo do vseh preostalih vozlišč: najprej n - 1, čisto na koncu ostane samo še 1)
+- zgornja enačba velja, če imamo vektorje velikosti 2. Če so vektorji velikosti k, potem moramo vsak minimum x vrednosti pomnožiti še s k - 1 (k - 1 oken velikosti 2 gre v en vektor). To velja zaradi linearnosti pričakovane vrednosti 
+
 ---------------------------------------------------------------------------
 POTREBNI BOLJ EKSAKTNI DOKAZI IN OPISI ALGORITMOV!!!!!!!!!!
 
