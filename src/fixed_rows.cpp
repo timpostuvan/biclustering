@@ -22,8 +22,8 @@ void Solution::update(long double cost, vector<int> permutation){
 	this -> permutation = permutation;
 }
 
-void Solution::apply(vector<vector<long double>> &matrix){
-	this -> matrix = apply_permutation_columns(matrix, this -> permutation);
+void Solution::apply_permutation(){
+	this -> matrix = apply_permutation_columns(this -> matrix, this -> permutation);
 }
 
 void Solution::print(bool output_matrix){
@@ -188,7 +188,7 @@ Solution all_permutations(vector<vector<long double>> &matrix, function<long dou
 		}
 	} while(next_permutation(permutation.begin(), permutation.end()));
 
-	best_solution.apply(matrix);
+	best_solution.apply_permutation();
 	best_solution.print(0); 
 	return best_solution;
 }
@@ -220,7 +220,7 @@ Solution random_permutations(int iterations, vector<vector<long double>> &matrix
 		}
 	} 
 
-	best_solution.apply(matrix);
+	best_solution.apply_permutation();
 	best_solution.print(0); 
 	return best_solution;
 }
@@ -414,8 +414,8 @@ Solution tsp_2_opt(int search_iterations, long double difference, vector<vector<
 	Solution best_solution = Solution(n, m, cost, matrix, permutation);
 	long double delta = difference + 100.0;
 
-	cout << best_solution.cost << endl;
-	while(delta >= difference){
+//	while(delta >= difference){
+	while(1){
 		pair<int, int> best_move = {-1, -1};
 		long double best_cost = 1.0;
 
@@ -448,7 +448,7 @@ Solution tsp_2_opt(int search_iterations, long double difference, vector<vector<
 		delta = abs(best_cost);
 	}
 
-	best_solution.apply(matrix);
+	best_solution.apply_permutation();
 	best_solution.print(0); 
 	return best_solution;
 }

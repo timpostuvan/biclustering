@@ -27,22 +27,59 @@ PRIČAKOVANA VREDNOST MINIMUMA n VREDNOSTI, PORAZDELJENIH UNIFORMNO:
 https://math.stackexchange.com/questions/786392/expectation-of-minimum-of-n-i-i-d-uniform-random-variables 
 
 ---------------------------------------------------------------------------
-POTREBNI BOLJ EKSAKTNI DOKAZI IN OPISI ALGORITMOV
+
+PRIČAKOVANA VREDNOST MINIMUMA n VREDNOSTI, BETA DISTRIBUTION:
+- porazdelitev sem dobil z Mathematico (FindDistribution) na 100000 naključno generiranih primerih. Primere sem generiral kot matrike velikosti 2 * 2, z vnosi med 0 in 1, porazdelejino uniformno
+
+- najboljši distribuciji glede na Mathematico(FindDistribution):
+ - BetaDistribution[a = 1.50601, b = 4.71801]
+ - WeibullDistribution[1.55815, 0.26859]
+
+- CDF minimuma n vnosov, CDF spremenljivke X = F(x): 1 - (1 - F(x))^n
+- kot v viru:
+https://stats.stackexchange.com/questions/220/how-is-the-minimum-of-a-set-of-random-variables-distributed?fbclid=IwAR1dCpEbwRxVns4s9WONNVBbmLxhWAxikxdBYiCtiKYwcAwKDzpmkaIVCRc
+
+- da dobimo pričakovano vrednost rabimo moramo izračunati integral med 0 in 1: x * PDF(x)
+
+- PDF je odvod CDF: n * (1 - F(x)) ^ (n - 1) * F'(x), kjer je F'(x) PDF spremenljivke X
+
+- beta disibucija - CDF in PDF:
+https://reference.wolfram.com/language/ref/BetaDistribution.html
+
+- pričakovane vrednosti za spremenljivko se na žalost zaradi kompleksnosti ne da izračunati analitično, zato moramo uporabiti aproksimacijo
+
+- rezultati za manjša števila niso čisto enaki kot pri eksperimetnu, ampak za večja števila pa začnejo dobro konvergirati
+---------------------------------------------------------------------------
+POTREBNI BOLJ EKSAKTNI DOKAZI IN OPISI ALGORITMOV!!!!!!!!!!
 
 
 LOWER BOUND 1 DIMENZIJA:
-- lower_bound_1_closest: Naredimo cikel iz 
+- lower_bound_1_closest:
 
-- lower_bound_2_closest
+- lower_bound_2_closest:
 
-- lower_bound_spanning_tree
+- lower_bound_spanning_tree:
 
 
 ALGORITMI 1 DIMENZIJA:
-- all_permutations
+- all_permutations:
 
-- random_permutations
+- random_permutations:
 
-- spanning tree
+- spanning tree:
 
-- random_greedy_path_two_ends
+- random_greedy_path_two_ends:
+
+
+---------------------------------------------------------------------------
+
+RAZNE UGOTOVITE:
+- lower_bound_2_closest daje boljše oceno spodnje meje kot lower_bound_spanning_tree
+
+- lower_bound_spanning_tree daje boljšo oceno spodnje meje kot lower_bound_1_closest
+
+- spanning_tree algoritem deluje boljše kot random_greedy_path_two_ends. Razlika je precej majhna, vendar pri večjih primerih je spanning tree konstantno boljši. Pri majhnih primerih se zgodi tudi, da je random_greedy_path_two_ends včasih boljši (npr. pri velikostih do 10)
+
+- glavni problem pri pospešitvah algoritmov je računanje matrike razdalj, ki deluje v O(n^2 * m)
+
+- trenutna implemtacija 2-opt (prva, naivna) dela podobno dobro kot spanning tree

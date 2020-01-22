@@ -16,3 +16,9 @@ add_library(lib
 
 add_executable(main src/main.cpp)
 target_link_libraries(main PRIVATE lib)
+
+add_executable(distance correlation/distance.cpp)
+target_link_libraries(distance PRIVATE lib)
+
+add_executable(approximation correlation/approximation.cpp)
+target_link_libraries(approximation PRIVATE lib)

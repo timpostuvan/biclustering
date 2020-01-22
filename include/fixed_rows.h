@@ -19,7 +19,7 @@ public:
 	
 	void update(long double cost, vector<int> permutation);
 
-	void apply(vector<vector<long double>> &matrix);
+	void apply_permutation();
 
 	void print(bool output_matrix);
 

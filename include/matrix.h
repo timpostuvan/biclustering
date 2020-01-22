@@ -14,6 +14,8 @@ vector<vector<long double>> generate_binary_matrix(int n, int m);
 
 vector<vector<long double>> generate_random_matrix(int n, int m);
 
+vector<vector<long double>> random_submatrix(vector<vector<long double>> matrix, int size_x, int size_y);
+
 vector<vector<long double>> read_matrix();
 
 vector<vector<long double>> read_matrix_file(string path);
@@ -23,6 +25,8 @@ void output_matrix(vector<vector<long double>> &matrix);
 void output_matrix_file(string path, vector<vector<long double>> &matrix);
 
 vector<vector<long double>> apply_permutation_columns(vector<vector<long double>> &matrix, vector<int> &permutation);
+
+vector<vector<long double>> apply_random_permutation_columns(vector<vector<long double>> &matrix);
 
 vector<vector<long double>> apply_permutation_rows(vector<vector<long double>> &matrix, vector<int> &permutation);
 

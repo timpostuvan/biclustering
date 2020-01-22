@@ -2,9 +2,11 @@
 #include <string>
 #include <fstream>
 #include <functional>
+#include <algorithm>
 #include <random>
 #include <iomanip>
 #include <iostream>
+#include <cstdlib> 
 #include "matrix.h"
 
 using namespace std;
@@ -43,6 +45,28 @@ vector<vector<long double>> generate_random_matrix(int n, int m){
 	}
 
 	return matrix;
+}
+
+
+vector<vector<long double>> random_submatrix(vector<vector<long double>> matrix, int size_x, int size_y){
+	int n = matrix.size();
+	int m = matrix[0].size();
+
+	if(n < size_x || m < size_y){
+		return {};
+	}
+
+	int x = gen() % (n - size_x + 1);
+	int y = gen() % (m - size_y + 1);
+
+	vector<vector<long double>> ret;
+	ret.resize(size_x);
+	for(int i = 0; i < size_x; i++){
+		for(int j = 0; j < size_y; j++){
+			ret[i].push_back(matrix[x + i][y + j]);
+		}
+	}
+	return ret;
 }
 
 
@@ -134,6 +158,21 @@ vector<vector<long double>> apply_permutation_columns(vector<vector<long double>
 		}
 	}
 	return new_matrix;
+}
+
+
+vector<vector<long double>> apply_random_permutation_columns(vector<vector<long double>> &matrix){
+	int n = matrix.size();
+	int m = matrix[0].size();
+
+	vector<int> permutation;
+	for(int i = 0; i < m; i++){
+		permutation.push_back(i);
+	}
+
+	srand(time(NULL));
+	random_shuffle(permutation.begin(), permutation.end());
+	return apply_permutation_columns(matrix, permutation);
 }
 
 
