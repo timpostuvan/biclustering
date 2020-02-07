@@ -1,6 +1,7 @@
 from skimage import io
 from skimage import img_as_float
 from skimage.color import rgb2gray
+import random
 
 def output_image_matrix(image_matrix_path, image_float):
 	f = open(image_matrix_path, "w+")
@@ -21,8 +22,8 @@ def output_image_matrix(image_matrix_path, image_float):
 
 
 
-image_path = "images-data/flower.jpg"
-#image_path = "images-data/caribbean.jpg"
+#image_path = "images-data/flower.jpg"
+image_path = "images-data/caribbean.jpg"
 
 image_matrix_path = image_path.rsplit(".", 1)[0] + "_matrix.txt"
 
@@ -38,6 +39,14 @@ io.imshow(gray_image)
 io.show()
 
 image_float = img_as_float(gray_image)
-output_image_matrix(image_matrix_path, image_float)
 
-print(image_float)
+size = 100
+x = random.randint(0, len(image_float) - size)
+y = random.randint(0, len(image_float[0]) - size)
+smaller_image_float = image_float[x:x + size, y:y + size]
+
+print(smaller_image_float)
+output_image_matrix(image_matrix_path, smaller_image_float)
+
+# output_image_matrix(image_matrix_path, image_float)
+# print(image_float)

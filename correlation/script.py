@@ -10,11 +10,11 @@ def read_data(file_path):
 
 
 number_of_iterations = 100
-directory = ["random", "random-binary", "image"]
+directory = ["random", "random-positive", "random-binary", "image", "biology"]
 tags = ["tsp", "l_spanning_tree", "l_2_closest", "l_1_closest", "u_spanning_tree", "u_greedy_path", "combined"]
 evaluation = ["l_spanning_tree", "l_2_closest", "l_1_closest", "u_spanning_tree", "u_greedy_path", "combined"]
 
-for i in range(len(directory)):
+for i in range(4, 5):
     output_file = directory[i] + "/results.txt" 
     f = open(output_file, "w+")
 
@@ -48,3 +48,7 @@ for i in range(len(directory)):
         f.write("\n")
 
     f.close()
+    
+
+# calculate coefficients
+os.system("python3 coefficients.py")

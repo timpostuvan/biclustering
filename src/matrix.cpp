@@ -34,13 +34,16 @@ vector<vector<long double>> generate_binary_matrix(int n, int m){
 }
 
 
-vector<vector<long double>> generate_random_matrix(int n, int m){
+vector<vector<long double>> generate_random_matrix(int n, int m, bool sign){
 	vector<vector<long double>> matrix;
 	matrix.resize(n);
 	for(int i = 0; i < n; i++){
 		matrix[i].resize(m);
 		for(int j = 0; j < m; j++){
 			matrix[i][j] = my_rand();
+			if(sign == true && gen() % 2 == 0){
+				matrix[i][j] *= -1.0;
+			}
 		}
 	}
 
@@ -176,6 +179,21 @@ vector<vector<long double>> apply_random_permutation_columns(vector<vector<long 
 }
 
 
+vector<vector<long double>> apply_random_permutation_rows(vector<vector<long double>> &matrix){
+	int n = matrix.size();
+	int m = matrix[0].size();
+
+	vector<int> permutation;
+	for(int i = 0; i < n; i++){
+		permutation.push_back(i);
+	}
+
+	srand(time(NULL));
+	random_shuffle(permutation.begin(), permutation.end());
+	return apply_permutation_rows(matrix, permutation);
+}
+
+
 vector<vector<long double>> apply_permutation_rows(vector<vector<long double>> &matrix, vector<int> &permutation){
 	int n = matrix.size();
 	int m = matrix[0].size();
@@ -187,7 +205,6 @@ vector<vector<long double>> apply_permutation_rows(vector<vector<long double>> &
 	}
 	return new_matrix;
 }
-
 
 
 vector<vector<long double>> distance_matrix_columns(vector<vector<long double>> &matrix, function<long double(vector<vector<long double>>&)> cost_function){

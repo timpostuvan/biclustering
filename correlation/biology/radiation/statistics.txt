@@ -1,0 +1,4 @@
+                  tsp        |  l_spanning_tree  |    l_2_closest    |    l_1_closest    |  u_spanning_tree  |   u_greedy_path   |     combined      
+pearson:        1.00000             0.97718             0.96925             0.96932             0.98394             0.98225             0.98773       
+spearman:       1.00000             0.97296             0.96554             0.96515             0.97938             0.97764             0.98415       
+kendall:        1.00000             0.86545             0.83879             0.83960             0.88162             0.87960             0.89657       

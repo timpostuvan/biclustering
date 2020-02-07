@@ -11,19 +11,34 @@ using namespace std;
 int main(int argc, char *argv[]){
 
 	vector<vector<long double>> matrix;
-	if(argv[1][0] == '0'){	// random matrix
-		matrix = generate_random_matrix(100, 100);
+	if(argv[1][0] == '0'){	// random matrix [-1, 1]
+		matrix = generate_random_matrix(100, 100, true);
 	}
-	if(argv[1][0] == '1'){	// random binary matrix
+
+	if(argv[1][0] == '1'){	// random positive matrix [0, 1]
+		matrix = generate_random_matrix(100, 100, false);
+	}
+
+	if(argv[1][0] == '2'){	// random binary matrix
 		matrix = generate_binary_matrix(100, 100);
 	}
 
-	if(argv[1][0] == '2'){	// random matrix within image
+	if(argv[1][0] == '3'){	// random matrix within image
 		sleep(1);
 	//	string image_path = "images-data/flower_matrix.txt";
 		string image_path = "images-data/caribbean_matrix.txt";
 		matrix = read_matrix_file(image_path);
-		matrix = random_submatrix(matrix, 100, 100);
+		matrix = apply_random_permutation_rows(matrix);
+		matrix = apply_random_permutation_columns(matrix);
+	}
+
+	if(argv[1][0] == '4'){	// biological data
+		sleep(1);
+//		string data_path = "biology-data/brown-selected/brown_selected.txt";
+//		string data_path = "biology-data/gastroparesis/gastroparesis_smaller.txt";
+		string data_path = "biology-data/radiation/radiation.csv";
+		matrix = read_matrix_file(data_path);
+		matrix = apply_random_permutation_rows(matrix);
 		matrix = apply_random_permutation_columns(matrix);
 	}
 

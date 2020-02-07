@@ -1,7 +1,7 @@
 import os
 import scipy.stats
 
-directory = ["random", "random-binary", "image"]
+directory = ["random", "random-positive", "random-binary", "image", "biology"]
 tags = ["tsp", "l_spanning_tree", "l_2_closest", "l_1_closest", "u_spanning_tree", "u_greedy_path", "combined"]
 evaluation = ["l_spanning_tree", "l_2_closest", "l_1_closest", "u_spanning_tree", "u_greedy_path", "combined"]
 

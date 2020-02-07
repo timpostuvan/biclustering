@@ -9,7 +9,8 @@ using namespace std;
 
 
 int main(){
-	vector<vector<long double>> matrix = generate_random_matrix(100, 1000);
+	for(int i = 0; i < 100; i++){
+	vector<vector<long double>> matrix = generate_random_matrix(100, 100, false);
 //	output_matrix(matrix);
 
 	cout << endl << "Lower bound 1 closest: " << lower_bound_1_closest(matrix, CostFunctions::variance22) << endl;
@@ -30,7 +31,7 @@ int main(){
 	spanning_tree(matrix, CostFunctions::variance22); 
 
 	cout << endl << "2-opt heuristics: " << endl;
-	tsp_2_opt(100000, 0.1, matrix, CostFunctions::variance22);
+	tsp_2_opt(100000, 0.1, matrix, CostFunctions::variance22);}
 
 /*	cout << endl << "All permutations " << endl;
 	all_permutations(matrix, CostFunctions::variance22); 
