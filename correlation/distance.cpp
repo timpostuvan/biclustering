@@ -25,8 +25,8 @@ int main(int argc, char *argv[]){
 
 	if(argv[1][0] == '3'){	// random matrix within image
 		sleep(1);
-	//	string image_path = "images-data/flower_matrix.txt";
-		string image_path = "images-data/caribbean_matrix.txt";
+		string image_path = "images-data/flower_matrix.txt";
+	//	string image_path = "images-data/caribbean_matrix.txt";
 		matrix = read_matrix_file(image_path);
 		matrix = apply_random_permutation_rows(matrix);
 		matrix = apply_random_permutation_columns(matrix);
