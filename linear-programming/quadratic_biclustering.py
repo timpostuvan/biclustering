@@ -60,8 +60,6 @@ def write_matrix_file(file_path, matrix):
         f.write("\n")
         
     f.close()
-    
-
 # -----------------------------------------------------------------------------------
 
 def variance22(matrix, n, m, i, j, k, l):
@@ -128,34 +126,32 @@ def subtour(num_nodes, edges):
     return cycle
 
 
-
+"""
 # Random matrix of size rows * columns
 rows = int(sys.argv[1])
 columns = int(sys.argv[2])
 matrix = np.random.rand(rows, columns)
-
-write_matrix_file("matrix.txt", matrix)
-
 """
-matrix = read_matrix_file("matrix.txt")
+
+matrix = read_matrix_file("optimized_matrix.txt")
 rows, columns = matrix.shape
-"""
+
 
 # Add one dummy node per dimension to create cycle
 rows += 1
 columns += 1
+
 
 # Cost for all 2 * 2 submatrices
 cost = {(i, j, k, l): variance22(matrix, rows, columns, i, j, k, l)
         for i in range(rows) for j in range(i) for k in range(columns) for l in range(k)}
 
 m = gp.Model("Biclustering")
-z = m.addVars(cost.keys(), obj=cost, vtype=GRB.BINARY, name='submatrix')
-
 x_keys = [(i, j) for i in range(rows) for j in range(i)]
 y_keys = [(i, j) for i in range(columns) for j in range(i)]
 x = m.addVars(x_keys, vtype=GRB.BINARY, name='rows')
 y = m.addVars(y_keys, vtype=GRB.BINARY, name='columns')
+
 
 for i, j in x.keys():
     x[j, i] = x[i, j]
@@ -164,24 +160,22 @@ for i, j in y.keys():
     y[j, i] = y[i, j]
 
 
-# All options for the same matrix
-for i, j, k, l in z.keys():
-    z[i, j, l, k] = z[i, j, k, l]
-    z[j, i, k, l] = z[i, j, k, l]
-    z[j, i, l, k] = z[i, j, k, l]
-
-
-# Add AND constrain for z: z[i, j, k, l] = x[i, j] AND y[k, l]
-for i, j, k, l in z.keys():
-    m.addConstr(z[i, j, k, l] <= x[i, j], "AND1")
-    m.addConstr(z[i, j, k, l] <= y[k, l], "AND2")
-    m.addConstr(z[i, j, k, l] >= x[i, j] + y[k, l] - 1, "AND3")
-
+m.setObjective(gp.quicksum([cost[i, j, k, l] * x[i, j] * y[k, l] for i, j, k, l in cost.keys()]))
 
 
 # Add degree-2 constraint
 m.addConstrs(x.sum(i, '*') == 2 for i in range(rows))
 m.addConstrs(y.sum(i, '*') == 2 for i in range(columns))
+
+
+
+# Starting solution
+for i in range(rows):
+    x[i, (i + 1) % rows].start = 1.0
+
+for i in range(columns):
+    y[i, (i + 1) % columns].start = 1.0
+
 
 
 # Optimize model
@@ -196,11 +190,6 @@ sol_y = m.getAttr('X', y)
 
 selected_x = gp.tuplelist((i, j) for i, j in sol_x.keys() if sol_x[i, j] > 0.5)
 selected_y = gp.tuplelist((i, j) for i, j in sol_y.keys() if sol_y[i, j] > 0.5)
-
-
-sol_z = m.getAttr('X', z)
-selected_z = gp.tuplelist((i, j, k, l) for i, j, k, l in sol_z.keys() if sol_z[i, j, k, l] > 0.5)
-print("Number: ", len(selected_z))
 
 tour_x = subtour(rows, selected_x)
 tour_y = subtour(columns, selected_y)
